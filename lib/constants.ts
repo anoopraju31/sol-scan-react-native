@@ -1,1 +1,1 @@
-export const RPC = "https://api.mainnet-beta.solana.com";
+export const RPC = 'https://api.mainnet-beta.solana.com';

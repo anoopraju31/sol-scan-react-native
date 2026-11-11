@@ -1,29 +1,29 @@
-import type { FC } from 'react'
-import { StyleSheet, Text } from 'react-native'
+import type { FC } from 'react';
+import { StyleSheet, Text } from 'react-native';
 
-const SolScanHeader:FC = () => {
+const SolScanHeader: FC = () => {
   return (
     <>
-        <Text style={s.title}>SolScan</Text>
-        <Text style={s.subtitle}>Explore any Solana wallet</Text>
+      <Text style={s.title}>SolScan</Text>
+      <Text style={s.subtitle}>Explore any Solana wallet</Text>
     </>
-  )
-}
+  );
+};
 
-export default SolScanHeader
+export default SolScanHeader;
 
 const s = StyleSheet.create({
   title: {
-    color: "#FFFFFF",
+    color: '#FFFFFF',
     fontSize: 32,
-    fontWeight: "700",
+    fontWeight: '700',
     marginBottom: 8,
     letterSpacing: -0.5,
   },
   subtitle: {
-    color: "#6B7280",
+    color: '#6B7280',
     fontSize: 15,
     marginBottom: 28,
-    fontWeight: "400",
+    fontWeight: '400',
   },
-})
+});
