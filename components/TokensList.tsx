@@ -8,7 +8,7 @@ type Props = {
 };
 
 const TokensList: FC<Props> = ({ tokens }) => {
-  if (tokens.length) return null;
+  if (tokens.length === 0) return null;
 
   return (
     <>
