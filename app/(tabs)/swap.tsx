@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { type FC, useState } from 'react';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { View, Text, TouchableOpacity, ScrollView, StyleSheet, Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
 import TokenCard from '../../components/TokenCard';
 
-export default function SwapScreen() {
+const SwapScreen: FC = () => {
   const [fromAmount, setFromAmount] = useState('100');
   const [toAmount, setToAmount] = useState('0.28014');
   const [fromToken, setFromToken] = useState('USDC');
@@ -23,33 +24,41 @@ export default function SwapScreen() {
   };
 
   return (
-    <ScrollView style={s.scroll} contentContainerStyle={s.content}>
-      <Text style={s.title}>Swap Tokens</Text>
+    <SafeAreaView style={s.safe}>
+      <ScrollView style={s.scroll} contentContainerStyle={s.content}>
+        <Text style={s.title}>Swap Tokens</Text>
 
-      {/* From Token Card */}
-      <View style={{ marginBottom: 10 }}>
-        <TokenCard amount={fromAmount} setAmount={setFromAmount} token={fromToken} user="S" userBg="#9945FF" />
-      </View>
+        {/* From Token Card */}
+        <View style={{ marginBottom: 10 }}>
+          <TokenCard amount={fromAmount} setAmount={setFromAmount} token={fromToken} user="S" userBg="#9945FF" />
+        </View>
 
-      {/* Swap Arrow */}
-      <View style={s.arrowContainer}>
-        <TouchableOpacity style={s.swapArrow} onPress={swapTokens}>
-          <Ionicons name="arrow-down" size={20} color="#FFF" />
+        {/* Swap Arrow */}
+        <View style={s.arrowContainer}>
+          <TouchableOpacity style={s.swapArrow} onPress={swapTokens}>
+            <Ionicons name="arrow-down" size={20} color="#FFF" />
+          </TouchableOpacity>
+        </View>
+
+        {/* To Token Card */}
+        <TokenCard amount={toAmount} setAmount={setToAmount} token={toToken} user="$" userBg="#2775CA" />
+
+        {/* Swap Button */}
+        <TouchableOpacity style={s.swapBtn} onPress={handleSwap}>
+          <Text style={s.swapBtnText}>Swap</Text>
         </TouchableOpacity>
-      </View>
-
-      {/* To Token Card */}
-      <TokenCard amount={toAmount} setAmount={setToAmount} token={toToken} user="$" userBg="#2775CA" />
-
-      {/* Swap Button */}
-      <TouchableOpacity style={s.swapBtn} onPress={handleSwap}>
-        <Text style={s.swapBtnText}>Swap</Text>
-      </TouchableOpacity>
-    </ScrollView>
+      </ScrollView>
+    </SafeAreaView>
   );
-}
+};
+
+export default SwapScreen;
 
 const s = StyleSheet.create({
+  safe: {
+    flex: 1,
+    backgroundColor: '#0D0D12',
+  },
   scroll: {
     flex: 1,
     backgroundColor: '#0D0D12',
