@@ -1,5 +1,6 @@
 import type { FC } from 'react';
-import { FlatList, StyleSheet, Text, View } from 'react-native';
+import { useRouter } from "expo-router";
+import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import { short } from '../lib/utils';
 
@@ -8,6 +9,8 @@ type Props = {
 };
 
 const TokensList: FC<Props> = ({ tokens }) => {
+  const router = useRouter();
+
   if (tokens.length === 0) return null;
 
   return (
@@ -18,10 +21,16 @@ const TokensList: FC<Props> = ({ tokens }) => {
         keyExtractor={(t) => t.mint}
         scrollEnabled={false}
         renderItem={({ item }) => (
-          <View style={s.row}>
-            <Text style={s.mint}>{short(item.mint, 6)}</Text>
-            <Text style={s.amount}>{item.amount}</Text>
-          </View>
+          <TouchableOpacity
+            onPress={() => {
+              router.push(`/token/${item.mint}`);
+            }}
+          >
+            <View style={s.row}>
+              <Text style={s.mint}>{short(item.mint, 6)}</Text>
+              <Text style={s.amount}>{item.amount}</Text>
+            </View>
+          </TouchableOpacity>
         )}
       />
     </>
