@@ -2,6 +2,7 @@ import { useState, type FC } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { View, ScrollView, StyleSheet, Alert } from 'react-native';
 
+import { useWalletStore } from '../../stores/wallet-stores';
 import { getBalance, getTokens, getTxns } from '../../lib/fetchers';
 import SolScanHeader from '../../components/SolScanHeader';
 import SolAddressSearch from '../../components/SolAddressSearch';
@@ -15,6 +16,9 @@ const WalletScreen: FC = () => {
   const [balance, setBalance] = useState<number | null>(null);
   const [tokens, setTokens] = useState<any[]>([]);
   const [txns, setTxns] = useState<any[]>([]);
+  const addToHistory = useWalletStore(s => s.addToHistory);
+  const searchHistory = useWalletStore(s => s.searchHistory);
+  const isDevnet = useWalletStore(s => s.isDevnet);
 
   const search = async () => {
     const addr = address.trim();
@@ -22,8 +26,10 @@ const WalletScreen: FC = () => {
     if (!addr) return Alert.alert('Enter a wallet address');
 
     setLoading(true);
+    addToHistory(address);
+
     try {
-      const [bal, tok, tx] = await Promise.all([getBalance(addr), getTokens(addr), getTxns(addr)]);
+      const [bal, tok, tx] = await Promise.all([getBalance(addr, isDevnet), getTokens(addr, isDevnet), getTxns(addr, isDevnet)]);
       setBalance(bal);
       setTokens(tok);
       setTxns(tx);
@@ -34,11 +40,29 @@ const WalletScreen: FC = () => {
     setLoading(false);
   };
 
-  const tryExample = () => {
-    const example = '86xCnPeV69n6t3DnyGvkKobf9FdN2H9oiVDdaMpo2MMY';
-
-    setAddress(example);
+  const searchFromHistory = (addr: string) => {
+    setAddress(addr);
+    addToHistory(addr);
+    setLoading(true);
+    Promise.all([getBalance(addr, isDevnet), getTokens(addr, isDevnet), getTxns(addr, isDevnet)])
+      .then(([bal, tok, tx]) => {
+        setBalance(bal);
+        setTokens(tok);
+        setTxns(tx);
+      })
+      .catch((e: unknown) => {
+        const message = e instanceof Error ? e.message : "Unknown error";
+        Alert.alert("Error", message);
+      })
+      .finally(() => setLoading(false));
   };
+
+  const handleClear = () => {
+    setAddress("");
+    setBalance(null);
+    setTokens([]);
+    setTxns([]);
+  }
 
   return (
     <SafeAreaView style={s.safe}>
@@ -49,7 +73,10 @@ const WalletScreen: FC = () => {
           loading={loading}
           search={search}
           setAddress={setAddress}
-          tryExample={tryExample}
+          handleClear={handleClear}
+          balance={balance}
+          searchFromHistory={searchFromHistory}
+          searchHistory={searchHistory}
         />
         <BalanceCard address={address} balance={balance} />
         <TokensList tokens={tokens} />
