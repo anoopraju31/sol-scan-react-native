@@ -8,3 +8,5 @@ export const timeAgo = (ts: number) => {
   if (s < 86400) return `${Math.floor(s / 3600)}h ago`;
   return `${Math.floor(s / 86400)}d ago`;
 };
+
+export const shortenAddress = (addr: string) => `${addr.slice(0, 6)}...${addr.slice(-4)}`;
