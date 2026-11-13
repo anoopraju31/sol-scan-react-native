@@ -16,9 +16,9 @@ const WalletScreen: FC = () => {
   const [balance, setBalance] = useState<number | null>(null);
   const [tokens, setTokens] = useState<any[]>([]);
   const [txns, setTxns] = useState<any[]>([]);
-  const addToHistory = useWalletStore(s => s.addToHistory);
-  const searchHistory = useWalletStore(s => s.searchHistory);
-  const isDevnet = useWalletStore(s => s.isDevnet);
+  const addToHistory = useWalletStore((s) => s.addToHistory);
+  const searchHistory = useWalletStore((s) => s.searchHistory);
+  const isDevnet = useWalletStore((s) => s.isDevnet);
 
   const search = async () => {
     const addr = address.trim();
@@ -29,7 +29,11 @@ const WalletScreen: FC = () => {
     addToHistory(address);
 
     try {
-      const [bal, tok, tx] = await Promise.all([getBalance(addr, isDevnet), getTokens(addr, isDevnet), getTxns(addr, isDevnet)]);
+      const [bal, tok, tx] = await Promise.all([
+        getBalance(addr, isDevnet),
+        getTokens(addr, isDevnet),
+        getTxns(addr, isDevnet),
+      ]);
       setBalance(bal);
       setTokens(tok);
       setTxns(tx);
@@ -51,18 +55,18 @@ const WalletScreen: FC = () => {
         setTxns(tx);
       })
       .catch((e: unknown) => {
-        const message = e instanceof Error ? e.message : "Unknown error";
-        Alert.alert("Error", message);
+        const message = e instanceof Error ? e.message : 'Unknown error';
+        Alert.alert('Error', message);
       })
       .finally(() => setLoading(false));
   };
 
   const handleClear = () => {
-    setAddress("");
+    setAddress('');
     setBalance(null);
     setTokens([]);
     setTxns([]);
-  }
+  };
 
   return (
     <SafeAreaView style={s.safe}>
