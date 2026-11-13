@@ -4,11 +4,14 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
+import { useWalletStore } from '../../stores/wallet-stores';
+import { getRpc } from '../../lib/fetchers';
 import TokenDetailsLoading from '../../components/TokenDetailsLoading';
 
 const TokenDetailScreen: FC = () => {
   const { mint } = useLocalSearchParams<{ mint: string }>();
   const router = useRouter();
+  const isDevnet = useWalletStore(s => s.isDevnet);
 
   const [tokenInfo, setTokenInfo] = useState<any>(null);
   const [loading, setLoading] = useState(true);
@@ -22,8 +25,9 @@ const TokenDetailScreen: FC = () => {
 
   const fetchTokenInfo = async () => {
     try {
+      const rpc = getRpc(isDevnet);
       // Using Solana RPC to get token supply info
-      const res = await fetch('https://api.mainnet-beta.solana.com', {
+      const res = await fetch(rpc, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
