@@ -11,7 +11,7 @@ import TokenDetailsLoading from '../../components/TokenDetailsLoading';
 const TokenDetailScreen: FC = () => {
   const { mint } = useLocalSearchParams<{ mint: string }>();
   const router = useRouter();
-  const isDevnet = useWalletStore(s => s.isDevnet);
+  const isDevnet = useWalletStore((s) => s.isDevnet);
 
   const [tokenInfo, setTokenInfo] = useState<any>(null);
   const [loading, setLoading] = useState(true);
