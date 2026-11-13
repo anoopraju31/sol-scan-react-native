@@ -1,5 +1,5 @@
 import type { FC } from 'react';
-import { useRouter } from "expo-router";
+import { useRouter } from 'expo-router';
 import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import { short } from '../lib/utils';

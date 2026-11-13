@@ -1,11 +1,11 @@
-import { create } from "zustand";
+import { create } from 'zustand';
 
 // Define the shape of your state
 interface WalletState {
   // Data
-  favorites: string[];          // saved wallet addresses
-  searchHistory: string[];      // recently searched addresses
-  isDevnet: boolean;            // devnet vs mainnet toggle
+  favorites: string[]; // saved wallet addresses
+  searchHistory: string[]; // recently searched addresses
+  isDevnet: boolean; // devnet vs mainnet toggle
 
   // Actions
   addFavorite: (address: string) => void;
@@ -48,6 +48,5 @@ export const useWalletStore = create<WalletState>((set, get) => ({
 
   clearHistory: () => set({ searchHistory: [] }),
 
-  toggleNetwork: () =>
-    set((state) => ({ isDevnet: !state.isDevnet })),
+  toggleNetwork: () => set((state) => ({ isDevnet: !state.isDevnet })),
 }));

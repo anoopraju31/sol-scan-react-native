@@ -1,9 +1,9 @@
-import { DEVNET_RPC, MAINNET_RPC} from './constants';
+import { DEVNET_RPC, MAINNET_RPC } from './constants';
 
-export const getRpc = (isDevnet: boolean) => isDevnet ? DEVNET_RPC : MAINNET_RPC;
+export const getRpc = (isDevnet: boolean) => (isDevnet ? DEVNET_RPC : MAINNET_RPC);
 
 export const rpc = async (method: string, params: any[], isDevnet: boolean) => {
-  const rpc = getRpc(isDevnet)
+  const rpc = getRpc(isDevnet);
   const res = await fetch(rpc, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -24,11 +24,11 @@ export const getBalance = async (addr: string, isDevnet: boolean) => {
 };
 
 export const getTokens = async (addr: string, isDevnet: boolean) => {
-  const result = await rpc('getTokenAccountsByOwner', [
-    addr,
-    { programId: 'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA' },
-    { encoding: 'jsonParsed' },
-  ], isDevnet);
+  const result = await rpc(
+    'getTokenAccountsByOwner',
+    [addr, { programId: 'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA' }, { encoding: 'jsonParsed' }],
+    isDevnet,
+  );
   return (result.value || [])
     .map((a: any) => ({
       mint: a.account.data.parsed.info.mint,

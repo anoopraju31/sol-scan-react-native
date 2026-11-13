@@ -1,6 +1,7 @@
 import type { FC } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
+import { FavoriteButton } from './FavoriteButton';
 import { short } from '../lib/utils';
 
 type Props = {
@@ -13,11 +14,17 @@ const BalanceCard: FC<Props> = ({ address, balance }) => {
 
   return (
     <View style={s.card}>
+      <View style={s.favoriteWrapper}>
+        <FavoriteButton address={address.trim()} />
+      </View>
+
       <Text style={s.label}>SOL Balance</Text>
+
       <View style={s.balanceRow}>
         <Text style={s.balance}>{balance.toFixed(4)}</Text>
         <Text style={s.sol}>SOL</Text>
       </View>
+
       <Text style={s.addr}>{short(address.trim(), 6)}</Text>
     </View>
   );
@@ -34,6 +41,11 @@ const s = StyleSheet.create({
     marginTop: 28,
     borderWidth: 1,
     borderColor: '#2A2A35',
+  },
+  favoriteWrapper: {
+    position: 'absolute',
+    top: 12,
+    right: 12,
   },
   label: {
     color: '#6B7280',
